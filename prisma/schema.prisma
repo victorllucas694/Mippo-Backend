@@ -1,0 +1,283 @@
+// This is your Prisma schema file
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://root:myS3cr3tR00tP4ssw0rd@localhost:5432/marketplace_tcc"
+}
+
+model ProductCommentaries {
+  id                     Int      @id @default(autoincrement())
+  name                   String
+  commentary             String
+  product_category       String
+  products_id            Int
+  User_Id                Int
+  date_commentary        DateTime @default(now())
+  create_date_time       DateTime @default(now())
+  last_changed_date_time DateTime @default(now())
+  User                   User     @relation(fields: [User_Id], references: [id])
+}
+
+model User {
+  id                         Int                          @id @default(autoincrement())
+  name                       String
+  last_name                  String
+  email                      String                       @unique
+  password                   String
+  admin                      String
+  phone                      String
+  disable                    String
+  create_date_time           DateTime                     @default(now())
+  last_changed_date_time     DateTime                     @default(now())
+  drop_packages              drop_packages[]
+  Computers                  Computers[]
+  SuppliersSecretInformation SuppliersSecretInformation[]
+  Suppliers                  Suppliers[]
+  user_order                 product_order[]
+  notebooks                  notebooks[]
+  acessorios                 acessorios[]
+  hardware                   hardware[]
+  UserAddress                UserAddress[]
+  ProductCommentaries        ProductCommentaries[]
+}
+
+model IPAddressWithoutUser {
+  id                          Int                           @id @default(autoincrement())
+  ipAddress                   String
+  total_access_by_ip_address  String
+  create_date_time            DateTime                      @default(now())
+  last_access_date_time       DateTime                      @default(now())
+  last_changed_date_time      DateTime                      @default(now())
+  IPAddressWithUserPermission IPAddressWithUserPermission[]
+}
+
+model IPAddressWithUserPermission {
+  id                         Int                  @id @default(autoincrement())
+  ipAddress                  String
+  city                       String
+  region                     String
+  country                    String
+  postal                      String
+  hostname                   String
+  total_access_by_ip_address String
+  create_date_time           DateTime             @default(now())
+  last_access_date_time      DateTime             @default(now())
+  last_changed_date_time     DateTime             @default(now())
+  ip_address_id              Int
+  TrustedAccess              IPAddressWithoutUser @relation(fields: [ip_address_id], references: [id])
+}
+
+model UserAddress {
+  id            Int    @id @default(autoincrement())
+  name          String
+  last_name     String
+  address       String
+  address_other String
+  city          String
+  state         String
+  CEP           String
+  country       String
+  User_Id       Int
+  User          User   @relation(fields: [User_Id], references: [id])
+}
+
+model product_order {
+  id               Int    @id @default(autoincrement())
+  id_pedido        Int
+  categoria_pedido String
+  codigo_do_pedido String
+  User_Id          Int
+  User             User   @relation(fields: [User_Id], references: [id])
+}
+
+model product_properties {
+  id                   Int    @id @default(autoincrement())
+  codigo_do_produto    String
+  categoria_do_produto String
+}
+
+model large_image {
+  id                 Int    @id @default(autoincrement())
+  large_image        String
+  codigo_das_imagens String
+}
+
+model side_images {
+  id           Int    @id @default(autoincrement())
+  first_image  String
+  second_image String
+  third_image  String
+  image_code   String
+  fourth_image String
+}
+
+model Suppliers {
+  id              Int    @id @unique @default(autoincrement())
+  name            String
+  phone           String
+  NIF             String
+  shipping_method String
+  User_Id         Int
+  User            User   @relation(fields: [User_Id], references: [id])
+}
+
+model SuppliersSecretInformation {
+  id                  Int    @id @unique @default(autoincrement())
+  bank_account_holder String
+  supplier_name       String
+  bank_agency         String
+  bank_name           String
+  bank_account_number String
+  road                String
+  city                String
+  User_Id             Int
+  CEP                 String
+  User                User   @relation(fields: [User_Id], references: [id])
+}
+
+model drop_packages {
+  id             Int    @id @unique @default(autoincrement())
+  product_name   String
+  min_price      String
+  model_product  String
+  code           String
+  description    String
+  categories     String
+  products_state String
+  supplier_name  String
+  brand          String
+  User_Id        Int
+  User           User   @relation(fields: [User_Id], references: [id])
+}
+
+model Computers {
+  id                              Int    @id @unique @default(autoincrement())
+  Marca                           String
+  Fabricante                      String
+  Formato                         String
+  Marca_do_processador            String
+  Tipo_de_processador             String
+  Velocidade_do_processador       String
+  Tipo_de_soquete_do_processador  String
+  Numero_de_processadores         String
+  Tamanho_da_memoria              String
+  Tecnologia_da_memoria           String
+  Tipo_de_Memoria                 String
+  Tamanho_do_HD                   String
+  Tecnologia_do_HD                String
+  Interface_do_HD                 String
+  Marca_do_chipset_de_video       String
+  Descricao_da_placa_de_video     String
+  Tipo_de_conexao                 String
+  Tecnologia_de_conexao           String
+  Plataforma_de_hardware          String
+  Sistema_operacional             String
+  Peso_do_produto                 String
+  Dimensoes_da_embalagem          String
+  Codigo                          String
+  Fornecedor                      String
+  Quantidade_em_estoque           String
+  User_Id                         Int
+  Valor_a_vista                   String
+  Valor_a_prazo                   String
+  Codigo_das_Imagens              String
+  Dimensoes_do_pacote             String
+  Descricao_final_sobre_o_produto String
+  User                            User   @relation(fields: [User_Id], references: [id])
+}
+
+model notebooks {
+  id                              Int    @id @unique @default(autoincrement())
+  Marca                           String
+  Fabricante                      String
+  Tamanho_da_tela                 String
+  Marca_do_processador            String
+  Tipo_de_processador             String
+  Velocidade_do_processador       String
+  Fornecedor                      String
+  Tipo_de_soquete_do_processador  String
+  Numero_de_processadores         String
+  Tamanho_da_memoria              String
+  Tecnologia_da_memoria           String
+  Tipo_de_Memoria                 String
+  Tamanho_do_HD                   String
+  Tecnologia_do_HD                String
+  Interface_do_HD                 String
+  Marca_do_chipset_de_video       String
+  Descricao_da_placa_de_video     String
+  Plataforma_de_hardware          String
+  Sistema_operacional             String
+  Tipo_de_conexao                 String
+  Bateria_interna                 String
+  Teclado_e_touchpad              String
+  Codigo                          String
+  Conectividade_sem_fio           String
+  Tela_sensivel_ao_toque          String
+  Webcam_embutida                 String
+  Audio_integrado                 String
+  Leitor_de_cartoes_de_memoria    String
+  User_Id                         Int
+  Valor_a_vista                   String
+  Valor_a_prazo                   String
+  Codigo_das_Imagens              String
+  Dimensoes_do_pacote             String
+  Descricao_final_sobre_o_produto String
+  User                            User   @relation(fields: [User_Id], references: [id])
+}
+
+model acessorios {
+  id                              Int    @id @unique @default(autoincrement())
+  Marca                           String
+  Fabricante                      String
+  Fornecedor                      String
+  montagem_necessaria             String
+  bateria_pilha                   String
+  bateria_inclusa                 String
+  tipo_da_bateria                 String
+  Tipo_de_soquete_do_processador  String
+  Peso_do_produto                 String
+  Dimensoes_da_embalagem          String
+  Codigo                          String
+  Quantidade_em_estoque           String
+  User_Id                         Int
+  Valor_a_vista                   String
+  Valor_a_prazo                   String
+  Codigo_das_Imagens              String
+  Dimensoes_do_pacote             String
+  Descricao_final_sobre_o_produto String
+  User                            User   @relation(fields: [User_Id], references: [id])
+}
+
+model hardware {
+  id                              Int    @id @unique @default(autoincrement())
+  Marca                           String
+  Fabricante                      String
+  Tipo_de_Hardware                String
+  Arquitetura                     String
+  Velocidade_do_Clock             String
+  Nucleos_e_Threads               String
+  Capacidade_de_Armazenamento     String
+  Tamanho_da_Memoria_RAM          String
+  Conectividade                   String
+  Tamanho_Fisico                  String
+  Peso                            String
+  Consumo_de_Energia              String
+  Compatibilidade                 String
+  Interfaces                      String
+  Drivers                         String
+  Fornecedor                      String
+  Outras_Caracteristicas          String
+  User_Id                         Int
+  Valor_a_vista                   String
+  Codigo                          String
+  Valor_a_prazo                   String
+  Codigo_das_Imagens              String
+  Dimensoes_do_pacote             String
+  Descricao_final_sobre_o_produto String
+  User                            User   @relation(fields: [User_Id], references: [id])
+}

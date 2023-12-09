@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: myS3cr3tR00tP4ssw0rd
+      POSTGRES_DB: marketplace_tcc
+    ports:
+      - "5432:5432"

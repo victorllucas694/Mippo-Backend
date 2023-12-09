@@ -1,0 +1,173 @@
+import { Injectable } from '@nestjs/common';
+import { CreatePaymentShippingCartDto } from './dto/create-payment-shipping-cart.dto';
+import { UpdatePaymentShippingCartDto } from './dto/update-payment-shipping-cart.dto';
+import { PrismaService } from 'prisma/prisma.service';
+
+@Injectable()
+export class PaymentShippingCartService {
+  constructor(private prisma: PrismaService) { }
+
+  async findShippingCartHistoryToPurchase(
+    createPaymentShippingCartDto: CreatePaymentShippingCartDto,
+    id: string,
+  ) {
+    const User_Id = parseInt(id);
+
+    const foundedOrderProduct = await this.prisma.product_order.findMany({
+      where: {
+        User_Id: User_Id,
+      },
+    });
+
+    const ordersProduct = [];
+
+    for (const products of foundedOrderProduct) {
+      console.log(products);
+      const productSelected = await this.findProductByCode(
+        this.prisma,
+        products.categoria_pedido,
+        products.id_pedido,
+      );
+
+      ordersProduct.push(productSelected);
+    }
+
+    return { foundedOrderProduct, ordersProduct };
+  }
+
+  async findProductByCode(prisma, category, dataToCompare) {
+    let save;
+    switch (category) {
+      case 'Computadores':
+        save = await prisma.computers.findUniqueOrThrow({
+          where: {
+            id: dataToCompare,
+          },
+        });
+        break;
+      case 'Notebook':
+        save = await prisma.notebooks.findUniqueOrThrow({
+          where: {
+            id: dataToCompare,
+          },
+        });
+        break;
+      case 'Acessorios':
+        save = await prisma.acessorios.findUniqueOrThrow({
+          where: {
+            id: dataToCompare,
+          },
+        });
+        console.log('Acessórios a');
+
+        break;
+      case 'Hardware':
+        save = await prisma.hardware.findUniqueOrThrow({
+          where: {
+            id: dataToCompare,
+          },
+        });
+        break;
+      default:
+        throw new Error('Categoria desconhecida');
+    }
+
+    return save;
+  }
+
+  async getAllProductsOnCart(id: number) {
+    const foundedOrderProduct = await this.prisma.user.findUniqueOrThrow({
+      where: {
+        id: id,
+      },
+    });
+
+    const arr = [];
+
+    if (foundedOrderProduct) {
+      const foundedOrderProducts = await this.prisma.product_order.findMany({
+        where: {
+          User_Id: id,
+        },
+      });
+
+      const productPromises = foundedOrderProducts.map(async (product) => {
+        const getProductsByOrderId = await this.findProductsToShoppingCart(
+          this.prisma,
+          product.categoria_pedido,
+          product.id_pedido,
+        );
+        console.log(getProductsByOrderId);
+        if (getProductsByOrderId) {
+          const foundedOrderProduct =
+            await this.prisma.large_image.findFirstOrThrow({
+              where: {
+                codigo_das_imagens: getProductsByOrderId.Codigo_das_Imagens,
+              },
+            });
+          return { getProductsByOrderId, foundedOrderProduct };
+        }
+      });
+
+      return Promise.all(productPromises);
+    }
+
+    return arr;
+  }
+
+  async findProductsToShoppingCart(prisma, category, IdToCompare) {
+    let save;
+    switch (category) {
+      case 'Computadores':
+        save = await prisma.computers.findUniqueOrThrow({
+          where: {
+            id: IdToCompare,
+          },
+        });
+        break;
+      case 'Notebook':
+        save = await prisma.notebooks.findUniqueOrThrow({
+          where: {
+            id: IdToCompare,
+          },
+        });
+        break;
+      case 'Acessorios':
+        save = await prisma.acessorios.findUniqueOrThrow({
+          where: {
+            id: IdToCompare,
+          },
+        });
+        break;
+      case 'Hardware':
+        save = await prisma.hardware.findUniqueOrThrow( {
+          where: {
+            id: IdToCompare,
+          },
+        });
+        break;
+      default:
+        throw new Error('Categoria desconhecida');
+    }
+    return save;
+  }
+
+  findAll() {
+    return `This action returns all paymentShippingCart`;
+  }
+
+  findOne(id: number) {
+    return `This action returns a #${id} paymentShippingCart`;
+  }
+
+  update(
+    id: number,
+    updatePaymentShippingCartDto: UpdatePaymentShippingCartDto,
+  ) {
+    return `This action updates a #${id} paymentShippingCart`;
+  }
+
+  remove(id: number) {
+    return `This action removes a #${id} paymentShippingCart`;
+  }
+}
