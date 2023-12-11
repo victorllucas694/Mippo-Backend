@@ -93,6 +93,58 @@ export class OrderManagementService {
     return getComputerSelectedById;
   }
 
+  async findProductsWithLowerStock(id: number) {
+    const trustUserToSearchQuery = await this.prisma.user.findUnique({
+      where: {
+        id: id,
+      },
+    });
+
+    if (trustUserToSearchQuery.admin === 'true') {
+      const dataComputerProduct = await this.getProductsWithLowerStock(this.prisma, 'Computadores');
+      const dataNotebookProduct = await this.getProductsWithLowerStock(this.prisma, 'Notebook');
+      const dataAcessoriesProduct = await this.getProductsWithLowerStock(this.prisma, 'Acessorios');
+      const dataHardwareProduct = await this.getProductsWithLowerStock(this.prisma, 'Hardware');
+
+      console.log(dataComputerProduct, dataNotebookProduct, dataAcessoriesProduct, dataHardwareProduct);  
+
+      if(dataComputerProduct && dataNotebookProduct && dataAcessoriesProduct && dataHardwareProduct) {
+        
+
+        return {
+          dataComputerProduct,
+          dataNotebookProduct,
+          dataAcessoriesProduct,
+          dataHardwareProduct
+        }
+      }
+      else {
+        return { error: 'erro'}
+      }
+    }
+  }
+
+  async getProductsWithLowerStock(prisma, category) {
+    let save;
+    switch (category) {
+      case 'Computadores':
+        save = await prisma.computers.findMany();
+        break;
+      case 'Notebook':
+        save = await prisma.notebooks.findMany();
+        break;
+      case 'Acessorios':
+        save = await prisma.notebooks.findMany();
+        break;
+      case 'Hardware':
+        save = await prisma.notebooks.findMany({});
+        break;
+      default:
+        throw new Error('Categoria desconhecida');
+    }
+    return save;
+  }
+
   async findUserOrder(id: number) {
     const trustUserToSearchQuery = await this.prisma.user.findUnique({
       where: {

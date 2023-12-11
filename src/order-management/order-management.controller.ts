@@ -70,6 +70,13 @@ export class OrderManagementController {
   }
 
   @UseGuards(AuthGuard)
+  @Get('get/alert/total/stock/:id')
+  findProductsWithLowerStock(@Param('id') id: string) {
+    return this.orderManagementService.findProductsWithLowerStock(+id);
+  }
+
+
+  @UseGuards(AuthGuard)
   @Get('get/all/user/orders/:id')
   findOrderProductsData(@Param('id') id: string) {
     return this.orderManagementService.findUserOrder(+id);
