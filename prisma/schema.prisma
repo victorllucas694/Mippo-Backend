@@ -23,6 +23,30 @@ model ProductCommentaries {
   User                   User     @relation(fields: [User_Id], references: [id])
 }
 
+model Employers {
+  id                     Int      @id @default(autoincrement())
+  name                   String
+  last_name              String
+  email                  String   @unique
+  Employee_gender        String
+  password               String
+  numberJob              String
+  position               String
+  employee_code          String
+  address                String
+  RG                     String
+  CPF                    String
+  phone                  String
+  employee_supervisor    String
+  bank_account           String
+  agency                 String
+  Bank                   String
+  employer_date          String
+  workload               String
+  create_date_time       DateTime @default(now())
+  last_changed_date_time DateTime @default(now())
+}
+
 model User {
   id                         Int                          @id @default(autoincrement())
   name                       String
@@ -62,7 +86,7 @@ model IPAddressWithUserPermission {
   city                       String
   region                     String
   country                    String
-  postal                      String
+  postal                     String
   hostname                   String
   total_access_by_ip_address String
   create_date_time           DateTime             @default(now())

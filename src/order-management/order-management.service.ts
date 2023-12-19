@@ -195,6 +195,7 @@ export class OrderManagementService {
                 user: { ...user },
                 product: { ...product },
               });
+              console.log(productsWithRelation)
             }
           });
         }
@@ -252,28 +253,28 @@ export class OrderManagementService {
     let save;
     switch (category) {
       case 'Computadores':
-        save = await prisma.computers.findUniqueOrThrow({
+        save = await prisma.computers.findMany({
           where: {
             id: data.id_pedido,
           },
         });
         break;
       case 'Notebook':
-        save = await prisma.notebooks.findUniqueOrThrow({
+        save = await prisma.notebooks.findMany({
           where: {
             id: data.id_pedido,
           },
         });
         break;
       case 'Acessorios':
-        save = await prisma.acessorios.findUniqueOrThrow({
+        save = await prisma.acessorios.findMany({
           where: {
             id: data.id_pedido,
           },
         });
         break;
       case 'Hardware':
-        save = await prisma.hardware.findUniqueOrThrow({
+        save = await prisma.hardware.findMany({
           where: {
             id: data.id_pedido,
           },
