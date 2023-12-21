@@ -212,6 +212,9 @@ export class OrderManagementService {
         id: id,
       },
     });
+
+    console.log("sdfsdfsd" +trustUserToSearchQuery)
+    
     const getComputerSelectedById = await this.prisma.product_order.findMany({
       where: {
         User_Id: id,
