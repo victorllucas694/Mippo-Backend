@@ -76,15 +76,7 @@ export class PaymentShippingCartService {
   }
 
   async getAllProductsOnCart(id: number) {
-    const foundedOrderProduct = await this.prisma.user.findUniqueOrThrow({
-      where: {
-        id: id,
-      },
-    });
 
-    const arr = [];
-
-    if (foundedOrderProduct) {
       const foundedOrderProducts = await this.prisma.product_order.findMany({
         where: {
           User_Id: id,
@@ -97,6 +89,8 @@ export class PaymentShippingCartService {
           product.categoria_pedido,
           product.id_pedido,
         );
+
+        console.log(product.id_pedido)
         console.log(getProductsByOrderId);
         if (getProductsByOrderId) {
           const foundedOrderProduct =
@@ -110,9 +104,6 @@ export class PaymentShippingCartService {
       });
 
       return Promise.all(productPromises);
-    }
-
-    return arr;
   }
 
   async findProductsToShoppingCart(prisma, category, IdToCompare) {
