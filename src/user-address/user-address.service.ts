@@ -9,8 +9,6 @@ export class UserAddressService {
 
   async create(createUserAddressDto: CreateUserAddressDto, id: number) {
     const { CEP, address, address_other, city, country, last_name, name, state } = createUserAddressDto;
-    console.log(CEP, address, address_other, city, country, last_name, name, state);
-    console.log(id);
 
     const saveSupplierBasicData = await this.prisma.userAddress.create({
       data: {
@@ -26,9 +24,7 @@ export class UserAddressService {
       },
     });
 
-    console.log(saveSupplierBasicData);
-
-    return createUserAddressDto;
+    return saveSupplierBasicData;
   }
 
   async findAllByUserId(id: number) {

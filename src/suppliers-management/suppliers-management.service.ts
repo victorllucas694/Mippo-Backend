@@ -26,17 +26,6 @@ export class SuppliersManagementService {
       supplier_name
     } = createSuppliersSecretDataManagementDto;
 
-    console.log(
-      bank_account_holder,
-      bank_account_number,
-      bank_agency,
-      bank_name,
-      CEP,
-      city,
-      road,
-      supplier_name
-    );
-
     try {
       const saveSupplierSecretData =
         await this.prisma.suppliersSecretInformation.create({
@@ -66,8 +55,6 @@ export class SuppliersManagementService {
     const User_id = parseInt(id);
     const { NIF, phone, shipping_method, supplier_name } =
       createSuppliersManagementDto;
-
-    console.log(NIF, phone, shipping_method, supplier_name);
 
     try {
       const saveSupplierBasicData = await this.prisma.suppliers.create({

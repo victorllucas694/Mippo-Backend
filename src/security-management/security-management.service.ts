@@ -25,7 +25,6 @@ export class SecurityManagementService {
         const response = await axios.get(
           `https://ipinfo.io/${ipAddressUserLayout}`,
         );
-        console.log(response);
 
         const saveAdvancedUserInfoBySecurity =
           await this.prisma.iPAddressWithUserPermission.create({
@@ -51,7 +50,7 @@ export class SecurityManagementService {
         console.log(err);
       }
     } else {
-      console.log('rerer');
+      console.log('erro');
     }
     if (allowed === 'CookiesNotAllowed') {
       try {

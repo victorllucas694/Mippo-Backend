@@ -9,14 +9,12 @@ export class ProductsManagementWithoutAuthService {
 
   async findAllProductsByCategory(category: string) {
     if (category) {
-      console.log(category)
       const getAllProductsByCategory = this.findProductByCode(this.prisma, category);
       return getAllProductsByCategory;
     }
   }
 
   async findProductByCode(prisma, category) {
-    console.log('findProductByCode')
     const models = {
       Computadores: prisma.computers,
       Notebook: prisma.notebooks,
@@ -31,7 +29,6 @@ export class ProductsManagementWithoutAuthService {
     }
 
     const products = await selectedModel.findMany();
-    console.log(products);
 
     return products;
   }
@@ -47,7 +44,6 @@ export class ProductsManagementWithoutAuthService {
 
 
   async queriesProductByImageCode(category, id, imagecode: string) {
-    console.log(category, id, imagecode)
     const results = [];
     const imagesCode = [];
     const getLargeImages = [];
@@ -103,9 +99,7 @@ export class ProductsManagementWithoutAuthService {
   }
 
   async filterProductByAllWordKeysParams(id: string, category: string, createDataDto: CreateDataDto) {
-    console.log(id)
     const userId = parseInt(id);
-    console.log(category)
 
     const foundedUser = await this.prisma.user.findMany({
       where: {
@@ -153,14 +147,6 @@ export class ProductsManagementWithoutAuthService {
       } else {
         console.log('O objeto createDataDto ou checkboxStates é indefinido ou nulo');
       }
-
-
-      // console.log(checkboxStates['Placas de vídeo'])
-      // console.log(checkboxStates['Sistema Operacional']);
-      // console.log(createDataDto['Conexões']);
-      // console.log(createDataDto['Memória RAM']);
-      // console.log(createDataDto['Processador']);
-      // console.log(createDataDto['Formato do produto']);
     }
   }
 
@@ -228,8 +214,6 @@ export class ProductsManagementWithoutAuthService {
 
     const save = await selectedModel.findMany();
 
-    console.log(save);
-
     return save;
   }
 
@@ -263,7 +247,6 @@ export class ProductsManagementWithoutAuthService {
       },
     });
 
-    console.log(save);
 
     return save;
   }
