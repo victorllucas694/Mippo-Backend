@@ -12,8 +12,6 @@ export class AdminCustomerManagerService {
   }
 
   async findAll(id: number) {
-    console.log(id);
-    
     const securityLayerByGetAllUser = await this.prisma.user.findUniqueOrThrow({
       where: {
         id: id
@@ -50,7 +48,6 @@ export class AdminCustomerManagerService {
         }
       });
 
-      console.log(getUserPropertiesByUSerId)
       return getUserPropertiesByUSerId;
     }
   }

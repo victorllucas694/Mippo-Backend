@@ -77,7 +77,6 @@ export class ProductsManagementController {
       storage: diskStorage({
         destination: './files',
         filename: (req, file, callback) => {
-          console.log(file);
           const uniqueSuffix =
             Date.now() + '-' + Math.round(Math.random() * 1e9) + '.csv';
           callback(null, file.fieldname + '-' + uniqueSuffix);

@@ -39,7 +39,6 @@
           workload
         } = createEmployerManagementDto;
     
-        console.log(createEmployerManagementDto);
     
         const getComputerSelectedById = await this.prisma.employers.create({
           data: createEmployerManagementDto,

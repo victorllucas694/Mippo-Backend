@@ -22,7 +22,6 @@ export class PaymentShippingCartService {
     const ordersProduct = [];
 
     for (const products of foundedOrderProduct) {
-      console.log(products);
       const productSelected = await this.findProductByCode(
         this.prisma,
         products.categoria_pedido,
@@ -88,8 +87,6 @@ export class PaymentShippingCartService {
           product.id_pedido,
         );
 
-        console.log(product.id_pedido)
-        console.log(getProductsByOrderId);
         if (getProductsByOrderId) {
           const foundedOrderProduct =
             await this.prisma.large_image.findFirstOrThrow({

@@ -21,7 +21,6 @@ export class InventaryManagementService {
 
     if(trustUserToSearchQuery.admin === "true") {
       const foundedProducts = await this.getQuantityOnInventaryByProductCategory(this.prisma, category);
-      console.log(foundedProducts)
       return foundedProducts;
     }
   
