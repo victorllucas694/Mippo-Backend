@@ -58,8 +58,6 @@ export class PaymentShippingCartService {
             id: dataToCompare,
           },
         });
-        console.log('Acessórios a');
-
         break;
       case 'Hardware':
         save = await prisma.hardware.findUniqueOrThrow({

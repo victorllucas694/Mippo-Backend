@@ -16,9 +16,10 @@ import { AdminCustomerManagerModule } from './admin-customer-manager/admin-custo
 import { InventaryManagementModule } from './inventary-management/inventary-management.module';
 import { SecurityManagementModule } from './security-management/security-management.module';
 import { EmployerManagementModule } from './employer-management/employer-management.module';
+import { PaymentModule } from './payment/payment.module';
 
 @Module({
-  imports: [RegisterUserModule, AuthenticateModule, ProductsManagementModule, SuppliersManagementModule, ProductsManagementWithoutAuthModule, OrderManagementModule, PaymentShippingCartModule, CommonUsersManagementModule, RenderImagesModule, UserAddressModule, FedexProviderModule, AdminCustomerManagerModule, InventaryManagementModule, SecurityManagementModule, EmployerManagementModule],
+  imports: [RegisterUserModule, AuthenticateModule, ProductsManagementModule, SuppliersManagementModule, ProductsManagementWithoutAuthModule, OrderManagementModule, PaymentShippingCartModule, CommonUsersManagementModule, RenderImagesModule, UserAddressModule, FedexProviderModule, AdminCustomerManagerModule, InventaryManagementModule, SecurityManagementModule, EmployerManagementModule, PaymentModule],
   controllers: [AppController],
   providers: [AppService],
 })

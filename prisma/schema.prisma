@@ -78,6 +78,7 @@ model IPAddressWithoutUser {
   last_access_date_time       DateTime                      @default(now())
   last_changed_date_time      DateTime                      @default(now())
   IPAddressWithUserPermission IPAddressWithUserPermission[]
+  payment                     payment[]
 }
 
 model IPAddressWithUserPermission {
@@ -304,4 +305,26 @@ model hardware {
   Dimensoes_do_pacote             String
   Descricao_final_sobre_o_produto String
   User                            User   @relation(fields: [User_Id], references: [id])
+}
+
+model payment {
+  id                         Int                  @id @unique @default(autoincrement())
+  CardholderName             String
+  cardNumber                 String
+  ExpirationMonth            String
+  ExpirationYear             String
+  CVC                        String
+  OfferCode                  String
+  ipAddress                  String
+  city                       String
+  region                     String
+  country                    String
+  postal                     String
+  hostname                   String
+  total_access_by_ip_address String
+  create_date_time           DateTime             @default(now())
+  last_access_date_time      DateTime             @default(now())
+  last_changed_date_time     DateTime             @default(now())
+  ip_address_id              Int
+  TrustedAccess              IPAddressWithoutUser @relation(fields: [ip_address_id], references: [id])
 }

@@ -101,25 +101,44 @@ export class OrderManagementService {
     });
 
     if (trustUserToSearchQuery.admin === 'true') {
-      const dataComputerProduct = await this.getProductsWithLowerStock(this.prisma, 'Computadores');
-      const dataNotebookProduct = await this.getProductsWithLowerStock(this.prisma, 'Notebook');
-      const dataAcessoriesProduct = await this.getProductsWithLowerStock(this.prisma, 'Acessorios');
-      const dataHardwareProduct = await this.getProductsWithLowerStock(this.prisma, 'Hardware');
+      const dataComputerProduct = await this.getProductsWithLowerStock(
+        this.prisma,
+        'Computadores',
+      );
+      const dataNotebookProduct = await this.getProductsWithLowerStock(
+        this.prisma,
+        'Notebook',
+      );
+      const dataAcessoriesProduct = await this.getProductsWithLowerStock(
+        this.prisma,
+        'Acessorios',
+      );
+      const dataHardwareProduct = await this.getProductsWithLowerStock(
+        this.prisma,
+        'Hardware',
+      );
 
-      console.log(dataComputerProduct, dataNotebookProduct, dataAcessoriesProduct, dataHardwareProduct);  
+      console.log(
+        dataComputerProduct,
+        dataNotebookProduct,
+        dataAcessoriesProduct,
+        dataHardwareProduct,
+      );
 
-      if(dataComputerProduct && dataNotebookProduct && dataAcessoriesProduct && dataHardwareProduct) {
-        
-
+      if (
+        dataComputerProduct &&
+        dataNotebookProduct &&
+        dataAcessoriesProduct &&
+        dataHardwareProduct
+      ) {
         return {
           dataComputerProduct,
           dataNotebookProduct,
           dataAcessoriesProduct,
-          dataHardwareProduct
-        }
-      }
-      else {
-        return { error: 'erro'}
+          dataHardwareProduct,
+        };
+      } else {
+        return { error: 'erro' };
       }
     }
   }
@@ -171,21 +190,26 @@ export class OrderManagementService {
         id: adminID,
       },
     });
+
+    console.log(trustUserToSearchQuery);
+
     if (trustUserToSearchQuery.admin === 'true') {
       const getComputerSelectedById =
         await this.prisma.product_order.findMany();
+
       for (const order of getComputerSelectedById) {
         const getUserPropertiesByUSerId = await this.prisma.user.findMany({
           where: {
             id: order.User_Id,
           },
         });
-
+        
         const product = await this.getOrderByCategories(
           this.prisma,
           order.categoria_pedido,
           order,
-        );
+          );
+          console.log(product)
 
         if (product) {
           getUserPropertiesByUSerId.map((user) => {
@@ -213,8 +237,8 @@ export class OrderManagementService {
       },
     });
 
-    console.log("sdfsdfsd" +trustUserToSearchQuery)
-    
+    console.log('sdfsdfsd' + trustUserToSearchQuery);
+
     const getComputerSelectedById = await this.prisma.product_order.findMany({
       where: {
         User_Id: id,
@@ -256,28 +280,28 @@ export class OrderManagementService {
     let save;
     switch (category) {
       case 'Computadores':
-        save = await prisma.computers.findMany({
+        save = await prisma.computers.findUnique({
           where: {
             id: data.id_pedido,
           },
         });
         break;
       case 'Notebook':
-        save = await prisma.notebooks.findMany({
+        save = await prisma.notebooks.findUnique({
           where: {
             id: data.id_pedido,
           },
         });
         break;
       case 'Acessorios':
-        save = await prisma.acessorios.findMany({
+        save = await prisma.acessorios.findUnique({
           where: {
             id: data.id_pedido,
           },
         });
         break;
       case 'Hardware':
-        save = await prisma.hardware.findMany({
+        save = await prisma.hardware.findUnique({
           where: {
             id: data.id_pedido,
           },
