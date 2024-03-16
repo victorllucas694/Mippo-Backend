@@ -14,9 +14,9 @@ export class PaymentShippingCartController {
     return this.paymentShippingCartService.findShippingCartHistoryToPurchase(createPaymentShippingCartDto, id);
   }
 
-  @Get()
-  findAll() {
-    return this.paymentShippingCartService.findAll();
+  @Get('/search/:category/:product')
+  findProductByIdAndName(@Param('category') category: string, @Param('product') product: string ) {
+    return this.paymentShippingCartService.findProductByIdAndProductName(category, product);
   }
 
   @Get('/cart/:id')

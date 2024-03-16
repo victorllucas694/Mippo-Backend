@@ -138,8 +138,15 @@ export class PaymentShippingCartService {
     return save;
   }
 
-  findAll() {
-    return `This action returns all paymentShippingCart`;
+  async findProductByIdAndProductName(category: string, product: string) {
+    const save = await this.prisma.notebooks.findMany( {
+      where: {
+        Fabricante: category,
+      },
+    });
+
+    console.log(save)
+    return save 
   }
 
   findOne(id: number) {
