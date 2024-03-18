@@ -3,6 +3,7 @@ import { BannerLayoutService } from './banner-layout.service';
 import { BannerLayoutController } from './banner-layout.controller';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
+import { PrismaService } from 'prisma/prisma.service';
 
 @Module({
   imports: [
@@ -16,6 +17,6 @@ import { JwtModule } from '@nestjs/jwt';
     }),
   ],
   controllers: [BannerLayoutController],
-  providers: [BannerLayoutService],
+  providers: [BannerLayoutService, PrismaService],
 })
 export class BannerLayoutModule {}
