@@ -7,7 +7,7 @@ import { UpdatePaymentDto } from './dto/update-payment.dto';
 export class PaymentController {
   constructor(private readonly paymentService: PaymentService) {}
 
-  @Post()
+  @Post('payment-data')
   create(@Body() createPaymentDto: CreatePaymentDto) {
     return this.paymentService.create(createPaymentDto);
   }
@@ -17,8 +17,8 @@ export class PaymentController {
     return this.paymentService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
+  @Get(':category/:id')
+  findOne(@Param('id') id: string, @Param('category') category: string,) {
     return this.paymentService.findOne(+id);
   }
 

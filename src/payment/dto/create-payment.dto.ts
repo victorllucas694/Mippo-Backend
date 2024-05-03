@@ -8,57 +8,49 @@ export class CreatePaymentDto {
 
     @IsNotEmpty()
     @IsString()
-    CardholderName: string;
-    
-    @IsNotEmpty()
-    @IsString()
-    cardNumber: string;
+    name: string;
 
     @IsNotEmpty()
     @IsString()
-    ExpirationMonth: string;
-    
+    last_name: string;
+
     @IsNotEmpty()
     @IsString()
-    ExpirationYear: string;
-    
+    address: string;
+
     @IsNotEmpty()
     @IsString()
-    CVC: string;
-    
-    @IsNotEmpty()
-    @IsString()
-    OfferCode: string;
-    
-    @IsNotEmpty()
-    @IsString()
-    ipAddress: string;
-    
+    details: string;
+
     @IsNotEmpty()
     @IsString()
     city: string;
-    
-    @IsNotEmpty()
-    @IsString()
-    region: string;
-    
-    @IsNotEmpty()
-    @IsString()
-    country: string;
-    
-    @IsNotEmpty()
-    @IsString()
-    postal: string;
-        
-    @IsNotEmpty()
-    @IsString()
-    hostname: string;
 
     @IsNotEmpty()
     @IsString()
-    total_access_by_ip_address: string;
-        
+    state: string;
+
     @IsNotEmpty()
     @IsString()
-    ip_address_id: string;
+    zip_code: string;
+
+    @IsNotEmpty()
+    @IsString()
+    country: string;
+
+    @IsNotEmpty()
+    @IsString()
+    card_number: string;
+
+    @IsNotEmpty()
+    @IsString()
+    expiration_date: string;
+
+    @IsNotEmpty()
+    @IsString()
+    card_holder: string;
+    
+    @IsNotEmpty()
+    @IsString()
+    CVV: string;
 }

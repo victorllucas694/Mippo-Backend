@@ -17,6 +17,26 @@ model bannerLayoutdb {
   image_path String
 }
 
+model purchaseUserData {
+  id        Int    @id @default(autoincrement())
+  name      String
+  last_name String
+  address   String
+  details   String
+  city      String
+  state     String
+  zip_code  String
+  country   String
+}
+
+model paymentDataLayout {
+  id              Int      @id @default(autoincrement())
+  card_holder      String
+  card_number      String
+  expiration_date String
+  CVV String
+}
+
 model ProductCommentaries {
   id                     Int      @id @default(autoincrement())
   name                   String
