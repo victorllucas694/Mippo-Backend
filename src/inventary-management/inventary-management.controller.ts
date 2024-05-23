@@ -17,9 +17,9 @@ export class InventaryManagementController {
     return this.inventaryManagementService.findAll(+id, category);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.inventaryManagementService.findOne(+id);
+  @Get(':filter')
+  findOne(@Param('filter') filter: string) {
+    return this.inventaryManagementService.filterProductByItemSelected(filter);
   }
 
   @Patch(':id')

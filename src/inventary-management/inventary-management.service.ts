@@ -48,8 +48,8 @@ export class InventaryManagementService {
     return save;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} inventaryManagement`;
+  filterProductByItemSelected(category: string) {
+    return category;
   }
 
   update(id: number, updateInventaryManagementDto: UpdateInventaryManagementDto) {
