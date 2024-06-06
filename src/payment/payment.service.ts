@@ -8,37 +8,8 @@ export class PaymentService {
   constructor(private prisma: PrismaService) {}
 
   async create(createPaymentDto: CreatePaymentDto) {
-    const {
-      CVV,
-      address,
-      card_holder,
-      card_number,
-      city,
-      country,
-      details,
-      expiration_date,
-      id,
-      last_name,
-      name,
-      state,
-      zip_code,
-    } = createPaymentDto;
 
-    // const foundedOrderProduct = await this.prisma.purchaseUserData.create({
-    //   data: {
-    //     address,
-    //     city,
-    //     country,
-    //     details,
-    //     id,
-    //     last_name,
-    //     name,
-    //     state,
-    //     zip_code,
-    //   },
-    // });
-
-    // return foundedOrderProduct;  
+    return createPaymentDto;  
   }
 
   findAll() {

@@ -229,6 +229,13 @@ export class OrderManagementService {
     return productsWithRelation;
   }
 
+  async getOrdersProducts(id: number) {
+      
+    const getComputerSelectedById = await this.prisma.product_order.findMany({});
+
+    return getComputerSelectedById;
+  }
+
   async findTotalPriceByShippingCart(id: number) {
     const productsWithRelation: IRelationTicket[] = [];
     const trustUserToSearchQuery = await this.prisma.user.findUnique({
@@ -236,8 +243,6 @@ export class OrderManagementService {
         id: id,
       },
     });
-
-    console.log('sdfsdfsd' + trustUserToSearchQuery);
 
     const getComputerSelectedById = await this.prisma.product_order.findMany({
       where: {

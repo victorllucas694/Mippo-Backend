@@ -24,9 +24,9 @@ export class PaymentShippingCartController {
     return this.paymentShippingCartService.getAllProductsOnCart(+id);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.paymentShippingCartService.findOne(+id);
+  @Get('purchase/products/shipping-cart/:id')
+  findProductsToShippingCartDara(@Param('id') id: string) {
+    return this.paymentShippingCartService.getProductShippingCart(+id);
   }
 
   @Patch(':id')

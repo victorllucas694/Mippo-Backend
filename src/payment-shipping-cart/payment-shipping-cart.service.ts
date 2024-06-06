@@ -149,9 +149,16 @@ export class PaymentShippingCartService {
     return save 
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} paymentShippingCart`;
+  async getProductShippingCart(id: number) {
+    const save = await this.prisma.product_order.findMany({
+      where: {
+        User_Id: id,
+      },
+    });
+
+    return save;
   }
+
 
   update(
     id: number,
