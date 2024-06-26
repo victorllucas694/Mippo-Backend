@@ -22,13 +22,9 @@ export class InventaryManagementController {
     return this.inventaryManagementService.filterProductByItemSelected(filter);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateInventaryManagementDto: UpdateInventaryManagementDto) {
-    return this.inventaryManagementService.update(+id, updateInventaryManagementDto);
-  }
+  // @Get('/:category/:id/:item')
+  // FilterProductsByParamCode(@Param('category') category: string, @Param('id') id: string, @Param('item') item: string) {
+  //   return this.inventaryManagementService.FilterProductsByParamCode(+id, category, item);
+  // }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.inventaryManagementService.remove(+id);
-  }
 }

@@ -28,14 +28,4 @@ export class PaymentShippingCartController {
   findProductsToShippingCartDara(@Param('id') id: string) {
     return this.paymentShippingCartService.getProductShippingCart(+id);
   }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePaymentShippingCartDto: UpdatePaymentShippingCartDto) {
-    return this.paymentShippingCartService.update(+id, updatePaymentShippingCartDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.paymentShippingCartService.remove(+id);
-  }
 }

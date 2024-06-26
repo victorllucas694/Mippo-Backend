@@ -50,20 +50,4 @@ export class SuppliersManagementController {
   findOne(@Param('id') id: string) {
     return this.suppliersManagementService.findOne(+id);
   }
-
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateSuppliersManagementDto: UpdateSuppliersManagementDto,
-  ) {
-    return this.suppliersManagementService.update(
-      +id,
-      updateSuppliersManagementDto,
-    );
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.suppliersManagementService.remove(+id);
-  }
 }

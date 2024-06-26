@@ -69,13 +69,6 @@ export class InventaryManagementService {
     return filteredProducts;
   }
 
-  update(
-    id: number,
-    updateInventaryManagementDto: UpdateInventaryManagementDto,
-  ) {
-    return `This action updates a #${id} inventaryManagement`;
-  }
-
   remove(id: number) {
     return `This action removes a #${id} inventaryManagement`;
   }

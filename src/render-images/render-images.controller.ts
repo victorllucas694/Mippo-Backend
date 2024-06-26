@@ -30,14 +30,4 @@ export class RenderImagesController {
   findOne(@Param('id') id: string) {
     return this.renderImagesService.findOne(+id);
   }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateRenderImageDto: UpdateRenderImageDto) {
-    return this.renderImagesService.update(+id, updateRenderImageDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.renderImagesService.remove(+id);
-  }
 }

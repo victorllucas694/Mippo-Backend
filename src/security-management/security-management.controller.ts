@@ -53,20 +53,4 @@ export class SecurityManagementController {
       +id
     );
   }
-
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateSecurityManagementDto: UpdateSecurityManagementDto,
-  ) {
-    return this.securityManagementService.update(
-      +id,
-      updateSecurityManagementDto,
-    );
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.securityManagementService.remove(+id);
-  }
 }

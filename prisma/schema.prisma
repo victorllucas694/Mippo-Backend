@@ -30,11 +30,11 @@ model purchaseUserData {
 }
 
 model paymentDataLayout {
-  id              Int      @id @default(autoincrement())
-  card_holder      String
-  card_number      String
+  id              Int    @id @default(autoincrement())
+  card_holder     String
+  card_number     String
   expiration_date String
-  CVV String
+  CVV             String
 }
 
 model ProductCommentaries {
@@ -205,6 +205,19 @@ model drop_packages {
   brand          String
   User_Id        Int
   User           User   @relation(fields: [User_Id], references: [id])
+}
+
+model address_form {
+  id          Int    @id @unique @default(autoincrement())
+  user_id     String
+  username    String
+  last_name   String
+  address     String
+  details     String
+  city        String
+  state       String
+  postal_code String
+  country     String
 }
 
 model Computers {

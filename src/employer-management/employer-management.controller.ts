@@ -25,16 +25,4 @@ export class EmployerManagementController {
   findOne(@Param('id') id: string) {
     return this.employerManagementService.findOne(+id);
   }
-
-  @Patch(':id')
-  @UseGuards(AuthGuard)
-  update(@Param('id') id: string, @Body() updateEmployerManagementDto: UpdateEmployerManagementDto) {
-    return this.employerManagementService.update(+id, updateEmployerManagementDto);
-  }
-
-  @Delete(':id')
-  @UseGuards(AuthGuard)
-  remove(@Param('id') id: string) {
-    return this.employerManagementService.remove(+id);
-  }
 }

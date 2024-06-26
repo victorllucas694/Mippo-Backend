@@ -26,9 +26,4 @@ export class CommonUsersManagementController {
   update(@Param('id') id: string, @Body() updateCommonUsersManagementDto: UpdateCommonUsersManagementDto) {
     return this.commonUsersManagementService.update(+id, updateCommonUsersManagementDto);
   }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.commonUsersManagementService.remove(+id);
-  }
 }

@@ -18,10 +18,9 @@ import { SecurityManagementModule } from './security-management/security-managem
 import { EmployerManagementModule } from './employer-management/employer-management.module';
 import { PaymentModule } from './payment/payment.module';
 import { NfeModule } from './nfe/nfe.module';
-import { BannerLayoutModule } from './banner-layout/banner-layout.module';
 
 @Module({
-  imports: [RegisterUserModule, AuthenticateModule, ProductsManagementModule, SuppliersManagementModule, ProductsManagementWithoutAuthModule, OrderManagementModule, PaymentShippingCartModule, CommonUsersManagementModule, RenderImagesModule, UserAddressModule, FedexProviderModule, AdminCustomerManagerModule, InventaryManagementModule, SecurityManagementModule, EmployerManagementModule, PaymentModule, NfeModule, BannerLayoutModule],
+  imports: [RegisterUserModule, AuthenticateModule, ProductsManagementModule, SuppliersManagementModule, ProductsManagementWithoutAuthModule, OrderManagementModule, PaymentShippingCartModule, CommonUsersManagementModule, RenderImagesModule, UserAddressModule, FedexProviderModule, AdminCustomerManagerModule, InventaryManagementModule, SecurityManagementModule, EmployerManagementModule, PaymentModule, NfeModule],
   controllers: [AppController],
   providers: [AppService],
 })

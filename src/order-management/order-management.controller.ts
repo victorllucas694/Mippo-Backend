@@ -93,19 +93,4 @@ export class OrderManagementController {
   findOne(@Param('id') id: string) {
     return this.orderManagementService.findOne(+id);
   }
-
-  @UseGuards(AuthGuard)
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateOrderManagementDto: UpdateOrderManagementDto,
-  ) {
-    return this.orderManagementService.update(+id, updateOrderManagementDto);
-  }
-
-  @UseGuards(AuthGuard)
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.orderManagementService.remove(+id);
-  }
 }
