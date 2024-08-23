@@ -4,21 +4,23 @@ import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 export class CreatePaymentShippingCartDto {
     @IsNotEmpty()
     @IsNumber()
-    id: number;
+    id: string;
     
     @IsNotEmpty()
-    @IsNumber()
-    id_pedido: number;
+    @IsString()
+    id_pedido: string;
 
     @IsNotEmpty()
-    @IsNumber()
-    categoria_pedido: number;
+    @IsString()
+    categoria_pedido: String;
 
     @IsNotEmpty()
-    @IsNumber()
-    codigo_do_pedido: number;
+    @IsString()
+    codigo_do_pedido: string;
 
     @IsNotEmpty()
-    @IsNumber()
-    User_Id: number;
+    @IsString()
+    User_Id: string;
 }
+
+

@@ -5,7 +5,7 @@ import { PrismaService } from 'prisma/prisma.service';
 
 @Injectable()
 export class PaymentShippingCartService {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
 
   async findShippingCartHistoryToPurchase(
     createPaymentShippingCartDto: CreatePaymentShippingCartDto,
@@ -32,6 +32,17 @@ export class PaymentShippingCartService {
     }
 
     return { foundedOrderProduct, ordersProduct };
+  }
+
+  async savePaymentDeliveryLocation(
+    id: number,
+    createPaymentShippingCartDto: CreatePaymentShippingCartDto,
+  ) {
+    if (createPaymentShippingCartDto) {
+      const { User_Id, categoria_pedido, id, codigo_do_pedido, id_pedido } =
+        createPaymentShippingCartDto;
+      return createPaymentShippingCartDto;
+    }
   }
 
   async findProductByCode(prisma, category, dataToCompare) {
@@ -73,32 +84,31 @@ export class PaymentShippingCartService {
   }
 
   async getAllProductsOnCart(id: number) {
+    const foundedOrderProducts = await this.prisma.product_order.findMany({
+      where: {
+        User_Id: id,
+      },
+    });
 
-      const foundedOrderProducts = await this.prisma.product_order.findMany({
-        where: {
-          User_Id: id,
-        },
-      });
+    const productPromises = foundedOrderProducts.map(async (product) => {
+      const getProductsByOrderId = await this.findProductsToShoppingCart(
+        this.prisma,
+        product.categoria_pedido,
+        product.id_pedido,
+      );
 
-      const productPromises = foundedOrderProducts.map(async (product) => {
-        const getProductsByOrderId = await this.findProductsToShoppingCart(
-          this.prisma,
-          product.categoria_pedido,
-          product.id_pedido,
-        );
+      if (getProductsByOrderId) {
+        const foundedOrderProduct =
+          await this.prisma.large_image.findFirstOrThrow({
+            where: {
+              codigo_das_imagens: getProductsByOrderId.Codigo_das_Imagens,
+            },
+          });
+        return { getProductsByOrderId, foundedOrderProduct };
+      }
+    });
 
-        if (getProductsByOrderId) {
-          const foundedOrderProduct =
-            await this.prisma.large_image.findFirstOrThrow({
-              where: {
-                codigo_das_imagens: getProductsByOrderId.Codigo_das_Imagens,
-              },
-            });
-          return { getProductsByOrderId, foundedOrderProduct };
-        }
-      });
-
-      return Promise.all(productPromises);
+    return Promise.all(productPromises);
   }
 
   async findProductsToShoppingCart(prisma, category, IdToCompare) {
@@ -126,7 +136,7 @@ export class PaymentShippingCartService {
         });
         break;
       case 'Hardware':
-        save = await prisma.hardware.findUniqueOrThrow( {
+        save = await prisma.hardware.findUniqueOrThrow({
           where: {
             id: IdToCompare,
           },
@@ -139,14 +149,14 @@ export class PaymentShippingCartService {
   }
 
   async findProductByIdAndProductName(category: string, product: string) {
-    const save = await this.prisma.notebooks.findMany( {
+    const save = await this.prisma.notebooks.findMany({
       where: {
         Fabricante: category,
       },
     });
 
-    console.log(save)
-    return save 
+    console.log(save);
+    return save;
   }
 
   async getProductShippingCart(id: number) {
@@ -159,6 +169,24 @@ export class PaymentShippingCartService {
     return save;
   }
 
+  async SaveOrderProduct(
+    id: number,
+    category: string,
+    createPaymentShippingCartDto: any,
+  ) {
+    const save = await this.prisma.product_order.findMany({
+      where: {
+        User_Id: id,
+      },
+    });
+
+    if (save) {
+      const productDataToDbOrder = await this.prisma.product_order.create({
+        data: createPaymentShippingCartDto,
+      });
+      return productDataToDbOrder;
+    }
+  }
 
   update(
     id: number,

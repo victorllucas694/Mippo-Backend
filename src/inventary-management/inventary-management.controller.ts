@@ -17,8 +17,8 @@ export class InventaryManagementController {
     return this.inventaryManagementService.findAll(+id, category);
   }
 
-  @Get(':filter')
-  findOne(@Param('filter') filter: string) {
+  @Post(':filter')
+  findOne(@Param('filter') filter: string, @Body() createInventaryManagementDto: CreateInventaryManagementDto) {
     return this.inventaryManagementService.filterProductByItemSelected(filter);
   }
 
