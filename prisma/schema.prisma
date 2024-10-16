@@ -272,12 +272,14 @@ model notebooks {
   Tipo_de_Memoria                 String
   Tamanho_do_HD                   String
   Tecnologia_do_HD                String
+  Peso_do_produto                 String
   Interface_do_HD                 String
   Marca_do_chipset_de_video       String
   Descricao_da_placa_de_video     String
   Plataforma_de_hardware          String
   Sistema_operacional             String
   Tipo_de_conexao                 String
+  Quantidade_em_estoque           String
   Bateria_interna                 String
   Teclado_e_touchpad              String
   Codigo                          String
@@ -330,7 +332,8 @@ model hardware {
   Tamanho_da_Memoria_RAM          String
   Conectividade                   String
   Tamanho_Fisico                  String
-  Peso                            String
+  Quantidade_em_estoque           String
+  Peso_do_produto                 String
   Consumo_de_Energia              String
   Compatibilidade                 String
   Interfaces                      String
