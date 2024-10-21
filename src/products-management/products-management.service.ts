@@ -105,7 +105,6 @@ export class ProductsManagementService {
           name: supplier_name,
         },
       });
-      console.log(foundedSupplierID);
 
       if (foundedSupplierID) {
         const sendDropProductPack = await this.prisma.drop_packages.create({
