@@ -5,7 +5,6 @@ import { PrismaService } from 'prisma/prisma.service';
 
 @Injectable()
 export class UserSettingsService {
-
   constructor(private prisma: PrismaService) {}
 
   create(createUserSettingDto: CreateUserSettingDto) {
@@ -17,8 +16,7 @@ export class UserSettingsService {
   }
 
   async findUserById(id: number) {
-
-    const foundedSupplierID = await this.prisma.user.findFirstOrThrow({
+    const foundedUserDataID = await this.prisma.user.findFirstOrThrow({
       where: {
         id: id,
       },
@@ -30,9 +28,37 @@ export class UserSettingsService {
       },
     });
 
-    return foundedSupplierID;
+    return foundedUserDataID;
   }
 
+  async findAddressUserById(id: number) {
+    const foundedAddressID = await this.prisma.address_form.findFirst({
+      where: {
+        id: id,
+      },
+      select: {
+        address: true,
+        city: true,
+        details: true,
+        country: true,
+        postal_code: true,
+        state: true,
+      },
+    });
+  
+    if (foundedAddressID) {
+      return foundedAddressID;
+    } else {
+      return {
+        address: false,
+        city: false,
+        details: false,
+        country: false,
+        postal_code: false,
+        state: false,
+      };
+    }
+  }
 
   findOne(id: number) {
     return `This action returns a #${id} userSetting`;

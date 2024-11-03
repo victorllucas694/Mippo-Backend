@@ -27,6 +27,12 @@ export class UserSettingsController {
     return this.userSettingsService.findUserById(+id);
   }
 
+  @Get('/get/address/:id')
+  findAddressById(@Param('id') id: string) {
+    return this.userSettingsService.findAddressUserById(+id);
+  }
+
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserSettingDto: UpdateUserSettingDto) {
     return this.userSettingsService.update(+id, updateUserSettingDto);
