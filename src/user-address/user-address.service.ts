@@ -8,33 +8,31 @@ export class UserAddressService {
   constructor(private prisma: PrismaService) { }
 
   async create(createUserAddressDto: CreateUserAddressDto, id: number) {
-    const { CEP, address, address_other, city, country, last_name, name, state } = createUserAddressDto;
+    const { CEP, address, address_other, city, country, state } = createUserAddressDto;
 
-    const saveSupplierBasicData = await this.prisma.userAddress.create({
+    const saveAddressBasicData = await this.prisma.userAddress.create({
       data: {
         address,
         address_other,
         city,
         country,
-        last_name,
-        name,
         state,
         CEP: CEP,
         User_Id: id
       },
     });
 
-    return saveSupplierBasicData;
+    return saveAddressBasicData;
   }
 
   async findAllByUserId(id: number) {
-    const saveSupplierBasicData = await this.prisma.userAddress.findMany({
+    const saveUseraddressBasicData = await this.prisma.userAddress.findMany({
       where: {
         User_Id: id
       },
     });
 
-    return saveSupplierBasicData;
+    return saveUseraddressBasicData;
   }
 
   findOne(id: number) {

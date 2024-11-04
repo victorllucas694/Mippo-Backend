@@ -1,3 +1,4 @@
+import { UserAddress } from './../user-address/entities/user-address.entity';
 import { Injectable } from '@nestjs/common';
 import { CreateUserSettingDto } from './dto/create-user-setting.dto';
 import { UpdateUserSettingDto } from './dto/update-user-setting.dto';
@@ -7,8 +8,25 @@ import { PrismaService } from 'prisma/prisma.service';
 export class UserSettingsService {
   constructor(private prisma: PrismaService) {}
 
-  create(createUserSettingDto: CreateUserSettingDto) {
-    return 'This action adds a new userSetting';
+  async createUserAddress(
+    createUserSettingDto: CreateUserSettingDto,
+    id: number,
+  ) {
+    if (id) {
+      const foundedAddressID = await this.prisma.user.findUnique({
+        where: { id: id },
+      });
+
+      if (foundedAddressID) {
+        const createAddressWithID = await this.prisma.userAddress.create({
+          data: createUserSettingDto,
+        });
+
+        return createAddressWithID;
+      } else {
+        return 'User Not Found';
+      }
+    }
   }
 
   findAll() {
@@ -32,29 +50,29 @@ export class UserSettingsService {
   }
 
   async findAddressUserById(id: number) {
-    const foundedAddressID = await this.prisma.address_form.findFirst({
+    const foundedAddressID = await this.prisma.userAddress.findFirst({
       where: {
         id: id,
       },
       select: {
         address: true,
         city: true,
-        details: true,
+        address_other: true,
         country: true,
-        postal_code: true,
+        CEP: true,
         state: true,
       },
     });
-  
+
     if (foundedAddressID) {
       return foundedAddressID;
     } else {
       return {
         address: false,
         city: false,
-        details: false,
+        address_other: false,
         country: false,
-        postal_code: false,
+        CEP: false,
         state: false,
       };
     }

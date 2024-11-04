@@ -7,9 +7,9 @@ import { UpdateUserSettingDto } from './dto/update-user-setting.dto';
 export class UserSettingsController {
   constructor(private readonly userSettingsService: UserSettingsService) {}
 
-  @Post()
-  create(@Body() createUserSettingDto: CreateUserSettingDto) {
-    return this.userSettingsService.create(createUserSettingDto);
+  @Post('/create/:id')
+  create(@Body() createUserSettingDto: CreateUserSettingDto, @Param('id') id: string) {
+    return this.userSettingsService.createUserAddress(createUserSettingDto, +id);
   }
 
   @Get()

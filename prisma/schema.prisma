@@ -126,8 +126,6 @@ model IPAddressWithUserPermission {
 
 model UserAddress {
   id            Int    @id @default(autoincrement())
-  name          String
-  last_name     String
   address       String
   address_other String
   city          String
