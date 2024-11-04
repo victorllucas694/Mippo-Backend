@@ -1,7 +1,7 @@
 import { UserAddress } from './../user-address/entities/user-address.entity';
 import { Injectable } from '@nestjs/common';
 import { CreateUserSettingDto } from './dto/create-user-setting.dto';
-import { UpdateUserSettingDto } from './dto/update-user-setting.dto';
+import { UpdateNewUserSettingDto, UpdateUserSettingDto } from './dto/update-user-setting.dto';
 import { PrismaService } from 'prisma/prisma.service';
 
 @Injectable()
@@ -29,6 +29,47 @@ export class UserSettingsService {
     }
   }
 
+  async updateUserAddress(
+    createUserSettingDto: CreateUserSettingDto,
+    id: number,
+  ) {
+    if (id) {
+      const foundedAddress = await this.prisma.userAddress.findMany({
+        where: { User_Id: id },
+      });
+  
+      if (foundedAddress) {
+        const updatedAddress = await this.prisma.userAddress.updateMany({
+          where: { User_Id: id },
+          data: createUserSettingDto,
+        });
+        return updatedAddress;
+      } else {
+        return 'User Address Not Found';
+      }
+    }
+  }
+
+  async updateUserBody(
+    updateNewUserSettingDto: UpdateNewUserSettingDto,
+    id: number,
+  ) {
+    if (id) {
+      const foundedUser = await this.prisma.user.findMany({
+        where: { id: id },
+      });
+  
+      if (foundedUser) {
+        const foundAndUpdateUserData = await this.prisma.user.updateMany({
+          where: { id: id },
+          data: updateNewUserSettingDto,
+        });
+        return foundAndUpdateUserData;
+      } else {
+        return 'User Address Not Found';
+      }
+    }
+  }
   findAll() {
     return `This action returns all userSettings`;
   }

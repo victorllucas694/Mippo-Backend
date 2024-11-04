@@ -1,7 +1,7 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/common';
 import { UserSettingsService } from './user-settings.service';
 import { CreateUserSettingDto } from './dto/create-user-setting.dto';
-import { UpdateUserSettingDto } from './dto/update-user-setting.dto';
+import { UpdateNewUserSettingDto, UpdateUserSettingDto } from './dto/update-user-setting.dto';
 
 @Controller('user-settings')
 export class UserSettingsController {
@@ -10,6 +10,16 @@ export class UserSettingsController {
   @Post('/create/:id')
   create(@Body() createUserSettingDto: CreateUserSettingDto, @Param('id') id: string) {
     return this.userSettingsService.createUserAddress(createUserSettingDto, +id);
+  }
+
+  @Post('/update/:id')
+  update(@Body() updateUserSettingDto: UpdateUserSettingDto, @Param('id') id: string) {
+    return this.userSettingsService.updateUserAddress(updateUserSettingDto, +id);
+  }
+
+  @Post('/update/user/:id')
+  updateUser(@Body() updateNewUserSettingDto: UpdateNewUserSettingDto, @Param('id') id: string) {
+    return this.userSettingsService.updateUserBody(updateNewUserSettingDto, +id);
   }
 
   @Get()
@@ -30,12 +40,6 @@ export class UserSettingsController {
   @Get('/get/address/:id')
   findAddressById(@Param('id') id: string) {
     return this.userSettingsService.findAddressUserById(+id);
-  }
-
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserSettingDto: UpdateUserSettingDto) {
-    return this.userSettingsService.update(+id, updateUserSettingDto);
   }
 
   @Delete(':id')
