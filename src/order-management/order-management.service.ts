@@ -182,6 +182,40 @@ export class OrderManagementService {
     }
   }
 
+  async findUserOrdersWithImage(id: number) {
+    const productsWithRelation: IRelationTicket[] = [];
+
+    const getComputerSelectedById = await this.prisma.product_order.findMany();
+
+    for (const order of getComputerSelectedById) {
+      const getUserPropertiesByUSerId = await this.prisma.user.findMany({
+        where: {
+          id: order.User_Id,
+        },
+      });
+
+      const product = await this.getOrderByCategories(
+        this.prisma,
+        order.categoria_pedido,
+        order,
+      );
+
+      if (product) {
+        getUserPropertiesByUSerId.map((user) => {
+          if (order.User_Id === user.id && order.id_pedido === product.id) {
+            productsWithRelation.push({
+              order: { ...order },
+              user: { ...user },
+              product: { ...product },
+            });
+          }
+        });
+      }
+    }
+
+    return productsWithRelation;
+  }
+
   async findAllOrders(id: string) {
     const adminID = parseInt(id);
     const productsWithRelation: IRelationTicket[] = [];
@@ -203,13 +237,13 @@ export class OrderManagementService {
             id: order.User_Id,
           },
         });
-        
+
         const product = await this.getOrderByCategories(
           this.prisma,
           order.categoria_pedido,
           order,
-          );
-          console.log(product)
+        );
+        console.log(product);
 
         if (product) {
           getUserPropertiesByUSerId.map((user) => {
@@ -219,7 +253,7 @@ export class OrderManagementService {
                 user: { ...user },
                 product: { ...product },
               });
-              console.log(productsWithRelation)
+              console.log(productsWithRelation);
             }
           });
         }
@@ -230,8 +264,9 @@ export class OrderManagementService {
   }
 
   async getOrdersProducts(id: number) {
-      
-    const getComputerSelectedById = await this.prisma.product_order.findMany({});
+    const getComputerSelectedById = await this.prisma.product_order.findMany(
+      {},
+    );
 
     return getComputerSelectedById;
   }

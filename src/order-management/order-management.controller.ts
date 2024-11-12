@@ -64,6 +64,12 @@ export class OrderManagementController {
   }
 
   @UseGuards(AuthGuard)
+  @Get('get/user/orders/:id')
+  findUserOrderWithImagesData(@Param('id') id: string): Promise<IRelationTicket[]> {
+    return this.orderManagementService.findUserOrdersWithImage(+id);
+  }
+
+  @UseGuards(AuthGuard)
   @Get('order-management/get/all/user/orders/:id')
   getTotalAmount(@Param('id') id: string): Promise<IRelationTicket[]> {
     return this.orderManagementService.findTotalPriceByShippingCart(+id);
