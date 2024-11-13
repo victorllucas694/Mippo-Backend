@@ -6,8 +6,8 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = "postgresql://root:myS3cr3tR00tP4ssw0rd@localhost:5432/marketplace_tcc"
+  provider = "mysql"
+  url      = "mysql://root@localhost:3306/marketplace_tcc"
 }
 
 model bannerLayoutdb {
