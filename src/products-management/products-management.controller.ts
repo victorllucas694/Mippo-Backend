@@ -97,7 +97,6 @@ export class ProductsManagementController {
   saveProductByProductCategory(@Body() createDropImagesDTO: CreateDropImagesDTO, @Param('id') id: string) {
     const productCategory = createDropImagesDTO.productCategory;
     const productCode = createDropImagesDTO.productCode;
-    console.log(productCategory, productCode);
     return this.productsManagementService.getDataToSaveOnDataBase(productCategory, productCode, id);
   }
   

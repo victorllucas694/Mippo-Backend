@@ -155,7 +155,6 @@ export class PaymentShippingCartService {
       },
     });
 
-    console.log(save);
     return save;
   }
 
@@ -168,25 +167,86 @@ export class PaymentShippingCartService {
 
     return save;
   }
-
   async SaveOrderProduct(
     id: number,
     category: string,
     createPaymentShippingCartDto: any,
   ) {
-    const save = await this.prisma.product_order.findMany({
-      where: {
-        User_Id: id,
-      },
-    });
+    console.log(id, category);
 
-    if (save) {
-      const productDataToDbOrder = await this.prisma.product_order.create({
+    const ordersPayload = await this.findOrdersByCategories(
+      this.prisma,
+      category,
+      id,
+    );
+    if (
+      parseInt(ordersPayload.Quantidade_em_estoque) &&
+      parseInt(ordersPayload.Quantidade_em_estoque) > 0
+    ) {
+      const productDataOrder = await this.prisma.product_order.create({
         data: createPaymentShippingCartDto,
       });
-      return productDataToDbOrder;
+      return productDataOrder;
+    } else {
+      return { error: 'Produto esgotado' };
     }
   }
+
+  async findOrdersByCategories(prisma, category, data) {
+    let save;
+    switch (category) {
+      case 'Computadores':
+        save = await prisma.computers.findUnique({
+          where: {
+            id: data,
+          },
+        });
+        break;
+      case 'Notebook':
+        save = await prisma.notebooks.findUnique({
+          where: {
+            id: data,
+          },
+        });
+        break;
+      case 'Acessorios':
+        save = await prisma.acessorios.findUnique({
+          where: {
+            id: data,
+          },
+        });
+        break;
+      case 'Hardware':
+        save = await prisma.hardware.findUnique({
+          where: {
+            id: data,
+          },
+        });
+        break;
+      default:
+        throw new Error('Categoria desconhecida');
+    }
+    return save;
+  }
+
+  // async SaveOrderProduct(
+  //   id: number,
+  //   category: string,
+  //   createPaymentShippingCartDto: any,
+  // ) {
+  //   const save = await this.prisma.product_order.findMany({
+  //     where: {
+  //       User_Id: id,
+  //     },
+  //   });
+
+  //   if (save) {
+  //     const productDataToDbOrder = await this.prisma.product_order.create({
+  //       data: createPaymentShippingCartDto,
+  //     });
+  //     return productDataToDbOrder;
+  //   }
+  // }
 
   update(
     id: number,

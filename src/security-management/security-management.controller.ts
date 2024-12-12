@@ -1,18 +1,9 @@
 import {
   Controller,
   Get,
-  Post,
-  Body,
-  Patch,
   Param,
-  Delete,
-  Req,
-  createParamDecorator,
 } from '@nestjs/common';
 import { SecurityManagementService } from './security-management.service';
-import { CreateSecurityManagementDto } from './dto/create-security-management.dto';
-import { UpdateSecurityManagementDto } from './dto/update-security-management.dto';
-import * as requestIp from 'request-ip';
 import axios from 'axios';
 
 @Controller('security-management')

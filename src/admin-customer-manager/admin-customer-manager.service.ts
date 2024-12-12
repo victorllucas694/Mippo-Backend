@@ -41,7 +41,6 @@ export class AdminCustomerManagerService {
 
     
     if(securityLayerByGetAllUser.admin === 'true') {
-      console.log(costumerid )
       const getUserPropertiesByUSerId = await this.prisma.user.findUniqueOrThrow({
         where: {
           id: costumerid

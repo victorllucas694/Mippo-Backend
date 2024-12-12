@@ -107,8 +107,6 @@ export class ProductsManagementWithoutAuthService {
       },
     });
 
-    // console.log(createDataDto);
-
     if (foundedUser) {
       const { checkboxStates } = createDataDto;
 
@@ -140,12 +138,8 @@ export class ProductsManagementWithoutAuthService {
           if (checkboxStates[keyToCheck]) {
             checkboxStates[keyToUse] = checkboxStates[keyToCheck];
             delete checkboxStates[keyToCheck];
-
-            console.log(checkboxStates[keyToUse])
           }
         }
-      } else {
-        console.log('O objeto createDataDto ou checkboxStates é indefinido ou nulo');
       }
     }
   }
@@ -171,29 +165,11 @@ export class ProductsManagementWithoutAuthService {
     });
 
 
-    // const where = {};
-
-    // for (const key in createDataDto) {
-    //   // console.log(createDataDto)
-    //   console.log("key", key);
-    //   // if (createDataDto.hasOwnProperty(key) && createDataDto[key] !== undefined) {
-    //   //   console.log(where)
-    //   //   where[key] = createDataDto[key];
-    //   // }
-    // }
-
-    // const save = await selectedModel.findMany({
-    //   where: where,
-    // });
-
-
-    // return save;
   }
 
   async productRecommendationByCategory(category: string) {
     if (category) {
       const getRecommendationProduct = await this.findUniqueProductByCategory(this.prisma, category);
-      console.log(getRecommendationProduct)
       return getRecommendationProduct;
     }
   }

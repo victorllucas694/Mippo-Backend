@@ -358,7 +358,6 @@ CREATE TABLE `hardware` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `Marca` VARCHAR(191) NOT NULL,
     `Fabricante` VARCHAR(191) NOT NULL,
-    `Tipo_de_Hardware` VARCHAR(191) NOT NULL,
     `Arquitetura` VARCHAR(191) NOT NULL,
     `Velocidade_do_Clock` VARCHAR(191) NOT NULL,
     `Nucleos_e_Threads` VARCHAR(191) NOT NULL,

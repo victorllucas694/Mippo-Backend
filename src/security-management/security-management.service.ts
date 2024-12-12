@@ -40,7 +40,6 @@ export class SecurityManagementService {
             },
           });
 
-        console.log(saveAdvancedUserInfoBySecurity);
 
         return {
           saveBasicUserInfoBySecurity,
@@ -124,13 +123,5 @@ export class SecurityManagementService {
         error: '404',
       };
     }
-  }
-
-  update(id: number, updateSecurityManagementDto: UpdateSecurityManagementDto) {
-    return `This action updates a #${id} securityManagement`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} securityManagement`;
   }
 }

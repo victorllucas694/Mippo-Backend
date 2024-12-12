@@ -86,19 +86,6 @@ export class ProductsManagementService {
 
     const User_id = parseInt(userId);
 
-    console.log(
-      brand,
-      category,
-      code,
-      description,
-      name,
-      User_id,
-      price,
-      quality,
-      supplier_name,
-      type,
-    );
-
     try {
       const foundedSupplierID = await this.prisma.suppliers.findFirstOrThrow({
         where: {
@@ -122,7 +109,6 @@ export class ProductsManagementService {
           },
         });
 
-        console.log(sendDropProductPack);
       }
 
       if (file && file.path) {
@@ -133,7 +119,6 @@ export class ProductsManagementService {
 
         if (lines.length > 1) {
           const headerLine = lines[0].split(',');
-          console.log(headerLine);
           const data = [];
 
           for (let i = 1; i < lines.length; i++) {
@@ -149,11 +134,9 @@ export class ProductsManagementService {
 
           data.map(async (db) => {
             db['User_Id'] = User_id;
-            console.log(db);
 
             try {
               const save = await this.saveData(this.prisma, category, db);
-              console.log(save);
             } catch (error) {
               console.error('Erro ao salvar os dados:', error);
             }
@@ -196,15 +179,12 @@ export class ProductsManagementService {
   ) {
     const userID = parseInt(id);
 
-    console.log(userID);
-
     const trustUser = await this.prisma.user.findUniqueOrThrow({
       where: {
         id: userID,
       },
     });
 
-    console.log(trustUser.admin);
 
     if (trustUser.admin === 'true') {
       const foundedProduct = await this.findProductByCode(
@@ -239,7 +219,6 @@ export class ProductsManagementService {
             Codigo_das_Imagens: dataToCompare,
           },
         });
-        console.log(save)
         break;
       case 'Notebook':
         save = await prisma.notebooks.findMany({
@@ -247,7 +226,6 @@ export class ProductsManagementService {
             Codigo_das_Imagens: dataToCompare,
           },
         });
-        console.log(save)
         break;
       case 'Acessórios':
         save = await prisma.acessorios.findMany({
@@ -255,9 +233,6 @@ export class ProductsManagementService {
             Codigo_das_Imagens: dataToCompare,
           },
         });
-        console.log('Acessórios a');
-
-        console.log(save)
         break;
       case 'Hardware':
         save = await prisma.hardware.findMany({
@@ -265,7 +240,6 @@ export class ProductsManagementService {
             Codigo_das_Imagens: dataToCompare,
           },
         });
-        console.log(save)
         break;
 
       default:
@@ -288,8 +262,6 @@ export class ProductsManagementService {
       },
     });
 
-    console.log(trustUser.admin);
-
     if (trustUser.admin === 'true') {
       const foundedProduct = await this.findProductByCode(
         this.prisma,
@@ -307,7 +279,6 @@ export class ProductsManagementService {
                 codigo_das_imagens: product.Codigo_das_Imagens,
               },
             });
-            console.log(insertComputerProps);
 
           })
         } catch (error) {
@@ -333,7 +304,6 @@ export class ProductsManagementService {
       },
     });
 
-    console.log(trustUser.admin);
 
     if (trustUser.admin === 'true') {
       const foundedProduct = await this.findProductByCode(
@@ -380,11 +350,9 @@ export class ProductsManagementService {
               },
             });
 
-            console.log(insertComputerProps);
           })
           return { message: 'Imagem lateral enviada com sucesso!' };
         } catch (error) {
-          console.log(error);
           return { error: error };
         }
       }

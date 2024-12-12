@@ -141,6 +141,7 @@ model product_order {
   id_pedido        Int
   categoria_pedido String
   codigo_do_pedido String
+  pagamento        String
   User_Id          Int
   User             User   @relation(fields: [User_Id], references: [id])
 }
@@ -322,7 +323,6 @@ model hardware {
   id                              Int    @id @unique @default(autoincrement())
   Marca                           String
   Fabricante                      String
-  Tipo_de_Hardware                String
   Arquitetura                     String
   Velocidade_do_Clock             String
   Nucleos_e_Threads               String

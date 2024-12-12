@@ -67,8 +67,6 @@ export class SuppliersManagementService {
         },
       });
 
-      console.log(saveSupplierBasicData)
-
       return saveSupplierBasicData;
     } catch (err) {
       console.log(err);
@@ -82,8 +80,6 @@ export class SuppliersManagementService {
         User_Id: User_id
       }
     });
-
-    console.log(saveSupplierBasicData);
 
     return saveSupplierBasicData;
   }

@@ -73,8 +73,6 @@ export class OrderManagementService {
     userId: string,
     category: string,
   ) {
-    console.log(createOrderManagementDto, userId);
-
     const userID = parseInt(userId);
 
     const { Codigo, id, name, Codigo_das_Imagens } = createOrderManagementDto;
@@ -85,10 +83,9 @@ export class OrderManagementService {
         codigo_do_pedido: Codigo_das_Imagens,
         id_pedido: id,
         User_Id: userID,
+        pagamento: 'not_paid'
       },
     });
-
-    console.log(getComputerSelectedById);
 
     return getComputerSelectedById;
   }
@@ -116,13 +113,6 @@ export class OrderManagementService {
       const dataHardwareProduct = await this.getProductsWithLowerStock(
         this.prisma,
         'Hardware',
-      );
-
-      console.log(
-        dataComputerProduct,
-        dataNotebookProduct,
-        dataAcessoriesProduct,
-        dataHardwareProduct,
       );
 
       if (
@@ -225,8 +215,6 @@ export class OrderManagementService {
       },
     });
 
-    console.log(trustUserToSearchQuery);
-
     if (trustUserToSearchQuery.admin === 'true') {
       const getComputerSelectedById =
         await this.prisma.product_order.findMany();
@@ -243,7 +231,6 @@ export class OrderManagementService {
           order.categoria_pedido,
           order,
         );
-        console.log(product);
 
         if (product) {
           getUserPropertiesByUSerId.map((user) => {
@@ -253,7 +240,6 @@ export class OrderManagementService {
                 user: { ...user },
                 product: { ...product },
               });
-              console.log(productsWithRelation);
             }
           });
         }
@@ -269,6 +255,147 @@ export class OrderManagementService {
     );
 
     return getComputerSelectedById;
+  }
+
+  async findAllOrdersByCommomUserId(id: number) {
+    const trustUserToSearchQuery = await this.prisma.user.findUnique({
+      where: {
+        id: id,
+      },
+    });
+
+    if (trustUserToSearchQuery) {
+      const findOrders = await this.prisma.product_order.findMany({
+        where: {
+          User_Id: id,
+        },
+      });
+
+      const processedOrders = await Promise.all(
+        findOrders.map(async (products: any) => {
+          const orders = await this.findOrdersByCategories(
+            this.prisma,
+            products.categoria_pedido,
+            products,
+          );
+          return { ...products, additionalOrders: orders };
+        }),
+      );
+
+      console.log(processedOrders);
+      return processedOrders;
+    } else {
+      throw new Error('User not found');
+    }
+  }
+
+  async findOrdersByCategories(prisma, category, data) {
+    let save;
+    switch (category) {
+      case 'Computadores':
+        save = await prisma.computers.findUnique({
+          where: {
+            id: data.id_pedido,
+          },
+        });
+        break;
+      case 'Notebook':
+        save = await prisma.notebooks.findUnique({
+          where: {
+            id: data.id_pedido,
+          },
+        });
+        break;
+      case 'Acessorios':
+        save = await prisma.acessorios.findUnique({
+          where: {
+            id: data.id_pedido,
+          },
+        });
+        break;
+      case 'Hardware':
+        save = await prisma.hardware.findUnique({
+          where: {
+            id: data.id_pedido,
+          },
+        });
+        break;
+      default:
+        throw new Error('Categoria desconhecida');
+    }
+    return save;
+  }
+
+  async getOrdersToPaymentProduct(id: number) {
+    const trustUserToSearchQuery = await this.prisma.user.findUnique({
+      where: {
+        id: id,
+      },
+    });
+    if (trustUserToSearchQuery?.admin === 'true') {
+      const getComputerSelectedById =
+        await this.prisma.product_order.findMany();
+      if (getComputerSelectedById) {
+        const products = await Promise.all(
+          getComputerSelectedById.map(async (order: any) => {
+            const product = await this.getOrderByCategories(
+              this.prisma,
+              order.categoria_pedido,
+              order,
+            );
+            const findUserByPayment = await this.prisma.user.findUniqueOrThrow({
+              where: {
+                id: order.User_Id,
+              },
+            });
+            return {
+              product,
+              user: findUserByPayment,
+              order,
+            };
+          }),
+        );
+        return products;
+      }
+    }
+    return [];
+  }
+
+  async getOrderById(prisma, category, data) {
+    let save;
+    switch (category) {
+      case 'Computadores':
+        save = await prisma.computers.findUnique({
+          where: {
+            id: data.id_pedido,
+          },
+        });
+        break;
+      case 'Notebook':
+        save = await prisma.notebooks.findUnique({
+          where: {
+            id: data.id_pedido,
+          },
+        });
+        break;
+      case 'Acessorios':
+        save = await prisma.acessorios.findUnique({
+          where: {
+            id: data.id_pedido,
+          },
+        });
+        break;
+      case 'Hardware':
+        save = await prisma.hardware.findUnique({
+          where: {
+            id: data.id_pedido,
+          },
+        });
+        break;
+      default:
+        throw new Error('Categoria desconhecida');
+    }
+    return save;
   }
 
   async findTotalPriceByShippingCart(id: number) {
@@ -297,8 +424,6 @@ export class OrderManagementService {
         order.categoria_pedido,
         order,
       );
-
-      console.log(product);
 
       if (product) {
         getUserPropertiesByUSerId.map((user) => {
@@ -351,17 +476,5 @@ export class OrderManagementService {
         throw new Error('Categoria desconhecida');
     }
     return save;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} orderManagement`;
-  }
-
-  update(id: number, updateOrderManagementDto: UpdateOrderManagementDto) {
-    return `This action updates a #${id} orderManagement`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} orderManagement`;
   }
 }

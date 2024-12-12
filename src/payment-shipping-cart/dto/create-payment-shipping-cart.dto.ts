@@ -21,6 +21,10 @@ export class CreatePaymentShippingCartDto {
     @IsNotEmpty()
     @IsString()
     User_Id: string;
+
+    @IsNotEmpty()
+    @IsString()
+    pagamento: string;
 }
 
 

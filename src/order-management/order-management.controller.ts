@@ -58,6 +58,17 @@ export class OrderManagementController {
   }
 
   @UseGuards(AuthGuard)
+  @Get('get/all/user/orders/:id')
+  findAllOrdersByCommomUserId(@Param('id') id: string) {
+    return this.orderManagementService.findAllOrdersByCommomUserId(+id);
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('get/all/orders/to/fix/:id')
+  getOrdersToFixProduct(@Param('id') id: string) {
+    return this.orderManagementService.getOrdersToPaymentProduct(+id);
+  }
+  @UseGuards(AuthGuard)
   @Get('get/all/orders/:id')
   findAll(@Param('id') id: string): Promise<IRelationTicket[]> {
     return this.orderManagementService.findAllOrders(id);
@@ -92,11 +103,5 @@ export class OrderManagementController {
   @Get('get/all/user/orders/:id')
   findOrderProductsData(@Param('id') id: string) {
     return this.orderManagementService.findUserOrder(+id);
-  }
-
-  @UseGuards(AuthGuard)
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.orderManagementService.findOne(+id);
   }
 }
