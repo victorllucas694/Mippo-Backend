@@ -141,6 +141,7 @@ model product_order {
   id_pedido        Int
   categoria_pedido String
   codigo_do_pedido String
+  retirado         String
   pagamento        String
   User_Id          Int
   User             User   @relation(fields: [User_Id], references: [id])

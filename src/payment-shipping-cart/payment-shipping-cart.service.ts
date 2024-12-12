@@ -167,6 +167,7 @@ export class PaymentShippingCartService {
 
     return save;
   }
+
   async SaveOrderProduct(
     id: number,
     category: string,
@@ -190,6 +191,107 @@ export class PaymentShippingCartService {
     } else {
       return { error: 'Produto esgotado' };
     }
+  }
+
+  async successPaymentProduct(userID: number, orderID: number) {
+    const foundedUser = await this.prisma.user.findUnique({
+      where: {
+        id: userID,
+      },
+    });
+
+    if(foundedUser.admin === 'true') {
+      const foundedProduct = await this.prisma.product_order.findMany({
+        where: {
+          id: orderID,
+        },
+      });
+
+      if (!foundedProduct) {
+        return { error: 'Pedido não encontrado' };
+      } else {
+        const updatedProduct = await this.prisma.product_order.update({
+          where: {
+            id: orderID,
+          },
+          data: {
+            pagamento: 'paid',
+          },
+        });
+    
+        return { message: 'Pagamento atualizado com sucesso', updatedProduct };
+      }
+    }
+
+  }
+
+  async successProductStock(userID: number, orderID: number, category: string) {
+    const foundedUser = await this.prisma.user.findUnique({
+      where: {
+        id: userID,
+      },
+    });
+
+    if(foundedUser.admin === 'true') {
+      const foundedProduct = await this.prisma.product_order.findMany({
+        where: {
+          id: orderID,
+        },
+      });
+
+      if (!foundedProduct) {
+        return { error: 'Pedido não encontrado' };
+      } else {
+        const updatedProduct = await this.prisma.product_order.update({
+          where: {
+            id: orderID,
+          },
+          data: {
+            retirado: 'true',
+          },
+        });
+    
+        return { message: 'Pagamento atualizado com sucesso', updatedProduct };
+      }
+    }
+
+  }
+
+  async removeStockItem(prisma, category, data) {
+    let save;
+    switch (category) {
+      case 'Computadores':
+        save = await prisma.computers.findUnique({
+          where: {
+            id: data,
+          },
+        });
+        break;
+      case 'Notebook':
+        save = await prisma.notebooks.findUnique({
+          where: {
+            id: data,
+          },
+        });
+        break;
+      case 'Acessorios':
+        save = await prisma.acessorios.findUnique({
+          where: {
+            id: data,
+          },
+        });
+        break;
+      case 'Hardware':
+        save = await prisma.hardware.findUnique({
+          where: {
+            id: data,
+          },
+        });
+        break;
+      default:
+        throw new Error('Categoria desconhecida');
+    }
+    return save;
   }
 
   async findOrdersByCategories(prisma, category, data) {
@@ -228,25 +330,6 @@ export class PaymentShippingCartService {
     }
     return save;
   }
-
-  // async SaveOrderProduct(
-  //   id: number,
-  //   category: string,
-  //   createPaymentShippingCartDto: any,
-  // ) {
-  //   const save = await this.prisma.product_order.findMany({
-  //     where: {
-  //       User_Id: id,
-  //     },
-  //   });
-
-  //   if (save) {
-  //     const productDataToDbOrder = await this.prisma.product_order.create({
-  //       data: createPaymentShippingCartDto,
-  //     });
-  //     return productDataToDbOrder;
-  //   }
-  // }
 
   update(
     id: number,

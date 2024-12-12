@@ -31,6 +31,17 @@ export class PaymentShippingCartController {
     );
   }
 
+  @UseGuards(AuthGuard)
+  @Get('/success/payment/product/:id/:orderid')
+  successPaymentProductRoute(
+    @Param('id') id: string,
+    @Param('orderid') orderid: string,
+  ) {
+    return this.paymentShippingCartService.successPaymentProduct(
+      +id, +orderid
+    );
+  }
+
   @Get('/search/:category/:product')
   findProductByIdAndName(
     @Param('category') category: string,

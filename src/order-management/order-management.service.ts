@@ -83,7 +83,8 @@ export class OrderManagementService {
         codigo_do_pedido: Codigo_das_Imagens,
         id_pedido: id,
         User_Id: userID,
-        pagamento: 'not_paid'
+        pagamento: 'not_paid',
+        retirado: 'false'
       },
     });
 
