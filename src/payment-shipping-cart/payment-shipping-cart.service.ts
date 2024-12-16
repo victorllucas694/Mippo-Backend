@@ -200,7 +200,7 @@ export class PaymentShippingCartService {
       },
     });
 
-    if(foundedUser.admin === 'true') {
+    if (foundedUser.admin === 'true') {
       const foundedProduct = await this.prisma.product_order.findMany({
         where: {
           id: orderID,
@@ -218,21 +218,20 @@ export class PaymentShippingCartService {
             pagamento: 'paid',
           },
         });
-    
+
         return { message: 'Pagamento atualizado com sucesso', updatedProduct };
       }
     }
-
   }
 
-  async successProductStock(userID: number, orderID: number, category: string) {
+  async successProductStock(userID: number, orderID: number) {
     const foundedUser = await this.prisma.user.findUnique({
       where: {
         id: userID,
       },
     });
 
-    if(foundedUser.admin === 'true') {
+    if (foundedUser.admin === 'true') {
       const foundedProduct = await this.prisma.product_order.findMany({
         where: {
           id: orderID,
@@ -250,15 +249,16 @@ export class PaymentShippingCartService {
             retirado: 'true',
           },
         });
-    
-        return { message: 'Pagamento atualizado com sucesso', updatedProduct };
+
+
+        const updatedStock = await this.removeStockItem(this.prisma, updatedProduct.categoria_pedido, updatedProduct.id_pedido);
+        return { message: 'Retirado atualizado com sucesso', updatedProduct };
       }
     }
-
   }
-
   async removeStockItem(prisma, category, data) {
     let save;
+
     switch (category) {
       case 'Computadores':
         save = await prisma.computers.findUnique({
@@ -291,7 +291,42 @@ export class PaymentShippingCartService {
       default:
         throw new Error('Categoria desconhecida');
     }
-    return save;
+
+    if (!save) {
+      throw new Error('Produto não encontrado');
+    }
+
+    const updatedQuantity = parseInt(save.Quantidade_em_estoque, 10) - 1;
+
+    let updatedProduct;
+    switch (category) {
+      case 'Computadores':
+        updatedProduct = await prisma.computers.update({
+          where: { id: data },
+          data: { Quantidade_em_estoque: updatedQuantity.toString() },
+        });
+        break;
+      case 'Notebook':
+        updatedProduct = await prisma.notebooks.update({
+          where: { id: data },
+          data: { Quantidade_em_estoque: updatedQuantity.toString() },
+        });
+        break;
+      case 'Acessorios':
+        updatedProduct = await prisma.acessorios.update({
+          where: { id: data },
+          data: { Quantidade_em_estoque: updatedQuantity.toString() },
+        });
+        break;
+      case 'Hardware':
+        updatedProduct = await prisma.hardware.update({
+          where: { id: data },
+          data: { Quantidade_em_estoque: updatedQuantity.toString() }, // Converte novamente para string se necessário
+        });
+        break;
+    }
+
+    return updatedProduct;
   }
 
   async findOrdersByCategories(prisma, category, data) {

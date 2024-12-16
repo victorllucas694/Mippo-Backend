@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateOrderManagementDto } from './dto/create-order-management.dto';
 import { UpdateOrderManagementDto } from './dto/update-order-management.dto';
 import { PrismaService } from 'prisma/prisma.service';
+import { retry } from 'rxjs';
 
 interface order {
   id: number;
@@ -77,18 +78,74 @@ export class OrderManagementService {
 
     const { Codigo, id, name, Codigo_das_Imagens } = createOrderManagementDto;
 
-    const getComputerSelectedById = await this.prisma.product_order.create({
-      data: {
-        categoria_pedido: category,
-        codigo_do_pedido: Codigo_das_Imagens,
-        id_pedido: id,
-        User_Id: userID,
-        pagamento: 'not_paid',
-        retirado: 'false'
-      },
-    });
+    const ordersPayload = await this.ordersByCategories(
+      this.prisma,
+      category,
+      id,
+    );
 
-    return getComputerSelectedById;
+    if (
+      parseInt(ordersPayload.Quantidade_em_estoque) &&
+      parseInt(ordersPayload.Quantidade_em_estoque) > 0
+    ) {
+      const getComputerSelectedById = await this.prisma.product_order.create({
+        data: {
+          categoria_pedido: category,
+          codigo_do_pedido: Codigo_das_Imagens,
+          id_pedido: id,
+          User_Id: userID,
+          pagamento: 'not_paid',
+          retirado: 'false'
+        },
+      });
+
+      return getComputerSelectedById;
+    }
+    else {
+      return 'produto esgotado'
+    }
+
+
+    // console.log(ordersPayload)
+
+
+    // return getComputerSelectedById;
+  }
+  async ordersByCategories(prisma, category, data) {
+    let save;
+    switch (category) {
+      case 'Computadores':
+        save = await prisma.computers.findUnique({
+          where: {
+            id: data,
+          },
+        });
+        break;
+      case 'Notebook':
+        save = await prisma.notebooks.findUnique({
+          where: {
+            id: data,
+          },
+        });
+        break;
+      case 'Acessorios':
+        save = await prisma.acessorios.findUnique({
+          where: {
+            id: data,
+          },
+        });
+        break;
+      case 'Hardware':
+        save = await prisma.hardware.findUnique({
+          where: {
+            id: data,
+          },
+        });
+        break;
+      default:
+        throw new Error('Categoria desconhecida');
+    }
+    return save;
   }
 
   async findProductsWithLowerStock(id: number) {
